@@ -1,10 +1,9 @@
 'use client'
 
-import LoginWithGoogle from "../../../components/Buttons/LoginWithGoogle";
-import { LoginForm } from "./form";
+import { RegisterFrom } from "./form";
 
 
-export default function LoginPage() {
+export default function RegisterPage() {
     return (
         <>
             <div className="p-4 max-w-xs mx-auto">
@@ -16,10 +15,8 @@ export default function LoginPage() {
                 </p>
             
                 <div className="text-center mb-6">
-                    <LoginForm />
+                    <RegisterFrom/>
                 </div>
-            
-                <LoginWithGoogle />
             </div>
         </>
     );
