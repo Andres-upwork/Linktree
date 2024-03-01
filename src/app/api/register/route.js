@@ -1,4 +1,5 @@
-import { MongoClient } from "mongodb";
+import { User } from "../../../models/User";
+import mongoose from "mongoose";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
@@ -6,16 +7,12 @@ export async function POST(req) {
   try {
     const { name, email, password } = await req.json();
     const hashed_password = await hash(password, 12);
-    const client = new MongoClient(process.env.MONGO_URI);
-    await client.connect();
-    const db = client.db("LinkList");
-    const usersCollection = db.collection("users");
-
-    const user = await usersCollection.insertOne({
+    mongoose.connect(process.env.MONGO_URI);    
+    const user = await new User({
       name: name,
       email: email.toLowerCase(),
       password: hashed_password,
-    });
+    }).save();
 
     return NextResponse.json({
       user: {

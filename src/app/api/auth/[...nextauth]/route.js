@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
-
-import { MongoClient } from "mongodb";
+import { User } from "../../../../models/User";
+import mongoose from "mongoose";
 import { compare } from "bcrypt";
 
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -42,12 +42,9 @@ export const authOptions = {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-
-        const client = new MongoClient(process.env.MONGO_URI);
-        await client.connect();
-        const db = client.db("LinkList");
-        const usersCollection = db.collection("users");
-        const user = await usersCollection.findOne({ email: credentials.email });
+	
+	mongoose.connect(process.env.MONGO_URI)
+        const user = await User.findOne({ email: credentials.email });
 
         if (!user || !(await compare(credentials.password, user.password))) {
           return null;
